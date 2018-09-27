@@ -324,7 +324,7 @@ module ClassifierReborn
     private
 
     def build_reduced_matrix(matrix, cutoff = 0.75)
-      Jekyll.logger.info "SV Decmopose:", matrix.inspect
+      Jekyll.logger.info "SV Decmopose:", "Decomposing.."
       # TODO: Check that M>=N on these dimensions! Transpose helps assure this
       u, v, s = matrix.SV_decomp
       # TODO: Better than 75% term, please. :\
