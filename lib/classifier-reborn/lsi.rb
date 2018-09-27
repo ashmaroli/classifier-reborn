@@ -139,6 +139,7 @@ module ClassifierReborn
       tda = doc_list.collect { |node| node.raw_vector_with(@word_list) }
 
       if $GSL
+        Jekyll.logger.info "$GSL:", $GSL
         tdm = GSL::Matrix.alloc(*tda).trans
         ntdm = build_reduced_matrix(tdm, cutoff)
 
@@ -152,6 +153,9 @@ module ClassifierReborn
         ntdm = build_reduced_matrix(tdm, cutoff)
 
         ntdm.column_size.times do |col|
+          print "TDM Columns: " 
+          p ntdm.column(col)
+          puts ""
           doc_list[col].lsi_vector = ntdm.column(col) if doc_list[col]
           if ntdm.column(col).zero?
             doc_list[col].lsi_norm = ntdm.column(col) if doc_list[col]
@@ -320,6 +324,7 @@ module ClassifierReborn
     private
 
     def build_reduced_matrix(matrix, cutoff = 0.75)
+      Jekyll.logger.info "SV Decmopose:", matrix.inspect
       # TODO: Check that M>=N on these dimensions! Transpose helps assure this
       u, v, s = matrix.SV_decomp
       # TODO: Better than 75% term, please. :\
@@ -351,6 +356,7 @@ module ClassifierReborn
     def make_word_list
       @word_list = WordList.new
       @items.each_value do |node|
+        Jekyll.logger.info "Word List Node:", node
         node.word_hash.each_key { |key| @word_list.add_word(key) }
       end
     end
