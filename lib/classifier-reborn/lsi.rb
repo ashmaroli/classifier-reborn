@@ -154,8 +154,7 @@ module ClassifierReborn
 
         ntdm.column_size.times do |col|
           print "TDM Columns: " 
-          p ntdm.column(col)
-          puts ""
+          p ntdm.column(col).class
           doc_list[col].lsi_vector = ntdm.column(col) if doc_list[col]
           if ntdm.column(col).zero?
             doc_list[col].lsi_norm = ntdm.column(col) if doc_list[col]
@@ -325,6 +324,7 @@ module ClassifierReborn
 
     def build_reduced_matrix(matrix, cutoff = 0.75)
       Jekyll.logger.info "SV Decmopose:", "Decomposing.."
+      return matrix
       # TODO: Check that M>=N on these dimensions! Transpose helps assure this
       u, v, s = matrix.SV_decomp
       # TODO: Better than 75% term, please. :\
